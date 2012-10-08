@@ -1,0 +1,12 @@
+rest_get_one:
+    pattern:  /{id}
+    defaults: { _controller: DemoRestBundle:Action:getOne }
+    requirements:
+      _method: GET
+      id: \d+
+      
+rest_get_all:
+    pattern:  /
+    defaults: { _controller: DemoRestBundle:Action:getAll }
+    requirements:
+      _method: GET

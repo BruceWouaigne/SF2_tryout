@@ -1,3 +1,11 @@
+demo_rest:
+    resource: "@DemoRestBundle/Resources/config/routing.yml"
+    prefix:   /
+
+demo_test:
+    resource: "@DemoTestBundle/Resources/config/routing.yml"
+    prefix:   /
+
 # Internal routing configuration to handle ESI
 #_internal:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"

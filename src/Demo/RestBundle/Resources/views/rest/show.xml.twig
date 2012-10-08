@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+{% for customer in customers %}
+	<customer>
+		<first_name>{{ customer.firstName }}</first_name>
+		<last_name>{{ customer.lastName }}</last_name>
+		<email_address>{{ customer.emailAddress }}</email_address>
+	</customer>
+{% endfor %}
+</root>
