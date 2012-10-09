@@ -1,0 +1,3 @@
+{ {% for customer in customers %}
+"customer_{{ customer.id }}" : {"first_name" : "{{ customer.firstName }}", "last_name" : "{{ customer.lastName }}", "email_address" : "{{ customer.emailAddress }}"}{% if loop.last == false %}, {% endif %}
+{% endfor %} }

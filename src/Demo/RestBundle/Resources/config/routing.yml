@@ -10,3 +10,15 @@ rest_get_all:
     defaults: { _controller: DemoRestBundle:Action:getAll }
     requirements:
       _method: GET
+
+rest_new:
+  pattern: /
+  defaults: { _controller: DemoRestBundle:Action:new }
+  requirements:
+    _method: POST
+
+rest_delete:
+    pattern:  /
+    defaults: { _controller: DemoRestBundle:Action:delete }
+    requirements:
+      _method: DELETE
