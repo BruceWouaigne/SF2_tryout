@@ -57,8 +57,8 @@ class ActionController extends Controller
     public function editAction()
     {
         try {
-            $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->editCustomer($this->getRequest()->request->all());
-            return $this->redirect($this->generateUrl('rest_get_all'));
+            $customer = $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->editCustomer($this->getRequest()->request->all());
+            return $this->redirect($this->generateUrl('rest_get_one', array('id' => $customer->getId())));
         } catch (\Exception $exc) {
             throw $this->createNotFoundException($exc->getMessage());
         }
@@ -72,8 +72,8 @@ class ActionController extends Controller
         }
         $this->getDoctrine()->getEntityManager()->remove($customer);
         $this->getDoctrine()->getEntityManager()->flush();
-        $response = new Response();
-        return $response;
+        
+		return $this->redirect($this->generateUrl('rest_get_all'));
     }
 
     protected function addBuddies()

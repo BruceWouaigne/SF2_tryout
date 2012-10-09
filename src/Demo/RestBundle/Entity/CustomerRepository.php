@@ -48,7 +48,7 @@ class CustomerRepository extends EntityRepository
      *  Edit an existing customer
      * 
      * @param array $postParams
-     * @return boolean
+     * @return \Demo\RestBundle\Entity\Customer
      * @throws \Exception
      */
     public function editCustomer($postParams)
@@ -80,7 +80,7 @@ class CustomerRepository extends EntityRepository
         $this->getEntityManager()->persist($customer);
         $this->getEntityManager()->flush();
         
-        return true;
+        return $customer;
     }
     
 }
