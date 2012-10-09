@@ -71,7 +71,7 @@ class CustomerRepository extends EntityRepository
         
         $customer = $this->find($postParams['id']);
         if ($customer == null) {
-            throw new \Exception('Can\'t find customer with id : ' . $postParams['id'] . '.');
+            throw new \Exception('Couldn\'t find customer with id : ' . $postParams['id'] . '.');
         }
         
         $customer->setFirstName($postParams['first_name']);

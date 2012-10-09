@@ -11,17 +11,20 @@ class ActionController extends Controller
 
     public function getOneAction($id)
     {
+        $response = new Response();
+        
+        $acceptableContentTypes = $this->getRequest()->getAcceptableContentTypes();
+        
         $customers = array();
         $customer = $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->find($id);
         if ($customer === null) {
-            throw $this->createNotFoundException('Can\'t find customer with id : ' . $id . '.');
+            $response->setContent($this->renderView('DemoRestBundle:failure:show.' . $this->getTemplateName($acceptableContentTypes[0]) . '.twig', array('error_message' => 'Couldn\'t find customer with id : ' . $id . '.')));
+            return $response;
         }
+
         $customers[] = $customer;
 
-        $acceptableContentTypes = $this->getRequest()->getAcceptableContentTypes();
-
-        $response = new Response();
-        $response->setContent($this->renderView('DemoRestBundle:Rest:show.' . $this->getTemplateName($acceptableContentTypes[0]) . '.twig', array('customers' => $customers)));
+        $response->setContent($this->renderView('DemoRestBundle:success:show.' . $this->getTemplateName($acceptableContentTypes[0]) . '.twig', array('customers' => $customers)));
         $response->headers->set('Content-Type', $acceptableContentTypes[0]);
 
         return $response;
@@ -29,16 +32,17 @@ class ActionController extends Controller
 
     public function getAllAction()
     {
+        $response = new Response();
+        
+        $acceptableContentTypes = $this->getRequest()->getAcceptableContentTypes();
+        
         $customers = $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->findAll();
         if (count($customers) == 0) {
             $this->addBuddies();
             $customers = $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->findAll();
         }
 
-        $acceptableContentTypes = $this->getRequest()->getAcceptableContentTypes();
-
-        $response = new Response();
-        $response->setContent($this->renderView('DemoRestBundle:Rest:show.' . $this->getTemplateName($acceptableContentTypes[0]) . '.twig', array('customers' => $customers)));
+        $response->setContent($this->renderView('DemoRestBundle:success:show.' . $this->getTemplateName($acceptableContentTypes[0]) . '.twig', array('customers' => $customers)));
         $response->headers->set('Content-Type', $acceptableContentTypes[0]);
 
         return $response;
@@ -46,34 +50,47 @@ class ActionController extends Controller
 
     public function newAction()
     {
+        $acceptableContentTypes = $this->getRequest()->getAcceptableContentTypes();
+        
         try {
             $customer = $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->addCustomer($this->getRequest()->request->all());
             return $this->redirect($this->generateUrl('rest_get_one', array('id' => $customer->getId())));
         } catch (\Exception $exc) {
-            throw $this->createNotFoundException($exc->getMessage());
+            $response = new Response();
+            $response->setContent($this->renderView('DemoRestBundle:failure:show.' . $this->getTemplateName($acceptableContentTypes[0]) . '.twig', array('error_message' => $exc->getMessage())));
+            return $response;            
         }
     }
 
     public function editAction()
     {
+        $acceptableContentTypes = $this->getRequest()->getAcceptableContentTypes();
+        
         try {
             $customer = $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->editCustomer($this->getRequest()->request->all());
             return $this->redirect($this->generateUrl('rest_get_one', array('id' => $customer->getId())));
         } catch (\Exception $exc) {
-            throw $this->createNotFoundException($exc->getMessage());
+            $response = new Response();
+            $response->setContent($this->renderView('DemoRestBundle:failure:show.' . $this->getTemplateName($acceptableContentTypes[0]) . '.twig', array('error_message' => $exc->getMessage())));
+            return $response;
         }
     }
 
     public function deleteAction($id)
     {
+        $acceptableContentTypes = $this->getRequest()->getAcceptableContentTypes();
+        
         $customer = $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->find($id);
         if ($customer === null) {
-            throw $this->createNotFoundException('Can\'t find customer with id : ' . $id . '.');
+            $response = new Response();
+            $response->setContent($this->renderView('DemoRestBundle:failure:show.' . $this->getTemplateName($acceptableContentTypes[0]) . '.twig', array('error_message' => 'Couldn\'t find customer with id : ' . $id . '.')));
+            return $response;
         }
+        
         $this->getDoctrine()->getEntityManager()->remove($customer);
         $this->getDoctrine()->getEntityManager()->flush();
         
-		return $this->redirect($this->generateUrl('rest_get_all'));
+        return $this->redirect($this->generateUrl('rest_get_all'));
     }
 
     protected function addBuddies()
@@ -99,10 +116,9 @@ class ActionController extends Controller
             return 'xml';
         } elseif ($contentType == 'application/json') {
             return 'json';
-        } elseif ($contentType == 'text/html') {
+        } else {
             return 'html';
         }
-        throw $this->createNotFoundException('Bad content type requested');
     }
 
 }
