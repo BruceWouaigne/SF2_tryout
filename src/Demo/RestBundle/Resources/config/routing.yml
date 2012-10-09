@@ -17,8 +17,15 @@ rest_new:
   requirements:
     _method: POST
 
+rest_edit:
+  pattern: /
+  defaults: { _controller: DemoRestBundle:Action:edit }
+  requirements:
+    _method: PUT
+
 rest_delete:
-    pattern:  /
+    pattern:  /{id}
     defaults: { _controller: DemoRestBundle:Action:delete }
     requirements:
       _method: DELETE
+      id: \d+

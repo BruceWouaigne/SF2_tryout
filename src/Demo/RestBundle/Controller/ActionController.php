@@ -64,11 +64,11 @@ class ActionController extends Controller
         }
     }
 
-    public function deleteAction()
+    public function deleteAction($id)
     {
-        $customer = $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->find($this->getRequest()->request->get('id'));
+        $customer = $this->getDoctrine()->getEntityManager()->getRepository('DemoRestBundle:Customer')->find($id);
         if ($customer === null) {
-            throw $this->createNotFoundException('Can\'t find customer with id : ' . $this->getRequest()->request->get('id') . '.');
+            throw $this->createNotFoundException('Can\'t find customer with id : ' . $id . '.');
         }
         $this->getDoctrine()->getEntityManager()->remove($customer);
         $this->getDoctrine()->getEntityManager()->flush();
