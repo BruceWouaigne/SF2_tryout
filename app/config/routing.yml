@@ -1,3 +1,7 @@
+demo_bicloo:
+    resource: "@DemoBiclooBundle/Resources/config/routing.yml"
+    prefix:   /
+
 demo_rest:
     resource: "@DemoRestBundle/Resources/config/routing.yml"
     prefix:   /

@@ -1,0 +1,15 @@
+<h1>Liste des stations</h1>
+<table>
+    <tr>
+        <th>Numéro</th>
+        <th>Nom</th>
+        <th>Distance</th>
+    </tr>
+    {% for station in stations %}
+    <tr>
+        <td>{{ station.number }}</td>
+        <td>{{ station.name }}</td>
+        <td>{{ station.isFar}}</td>
+    </tr>
+    {% endfor %}
+</table>

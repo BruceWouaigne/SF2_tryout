@@ -1,0 +1,6 @@
+demo_bicloo_homepage:
+    pattern:  /
+    defaults: { _controller: DemoBiclooBundle:Default:index }
+demo_bicloo_reload_stations:
+    pattern:  /reload_bicloo
+    defaults: { _controller: DemoBiclooBundle:Default:reloadStations }

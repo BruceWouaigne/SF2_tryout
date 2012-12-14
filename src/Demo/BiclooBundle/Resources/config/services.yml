@@ -1,0 +1,7 @@
+parameters:
+#    demo_bicloo.example.class: Demo\BiclooBundle\Example
+
+services:
+#    demo_bicloo.example:
+#        class: %demo_bicloo.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
