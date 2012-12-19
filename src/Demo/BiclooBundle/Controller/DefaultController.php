@@ -10,7 +10,7 @@ class DefaultController extends Controller
     
     public function indexAction()
     {
-        $stations = $this->getDoctrine()->getEntityManager()->getRepository('DemoBiclooBundle:Station')->findAll();
+//        $stations = $this->getDoctrine()->getEntityManager()->getRepository('DemoBiclooBundle:Station')->findAll();
         $stations = $this->getDoctrine()->getEntityManager()->createQuery('SELECT s FROM DemoBiclooBundle:Station s ORDER BY s.number ASC')->execute();
         return $this->render('DemoBiclooBundle:Default:index.html.twig', array('stations' => $stations));
     }    
