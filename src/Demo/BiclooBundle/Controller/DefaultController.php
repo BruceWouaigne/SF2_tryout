@@ -22,6 +22,8 @@ class DefaultController extends Controller
         $manager = $this->container->get('bicloo_manager');
         $manager->reloadMap();
         
+        $this->get('session')->setFlash('notice', 'Station list reloaded with success!');
+        
         return $this->redirect($this->generateUrl('bicloo_homepage'));
     }
 

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 /**
  * OccupationDetail
  *
- * @ORM\Table(uniqueConstraints={@UniqueConstraint(name="unique", columns={"station_id", "date"})})
+ * @ORM\Table(uniqueConstraints={@UniqueConstraint(name="unique_idx", columns={"station_id", "date"})})
  * @ORM\Entity(repositoryClass="Demo\BiclooBundle\Entity\OccupationDetailRepository")
  * @UniqueEntity(fields={"station", "date"})
  */
