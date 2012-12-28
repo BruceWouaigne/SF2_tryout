@@ -3,6 +3,8 @@
 namespace Demo\BiclooBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -20,7 +22,23 @@ class DefaultController extends Controller
         $manager = $this->container->get('bicloo_manager');
         $manager->reloadMap();
         
-        return $this->redirect($this->generateUrl('demo_bicloo_homepage'));
+        return $this->redirect($this->generateUrl('bicloo_homepage'));
     }
 
+    public function loadStationInfoAction(Request $request)
+    {
+        $manager = $this->container->get('bicloo_manager');
+        $occupationDetail = $manager->getOccupationFor($request->request->get('stationNumber'));
+        
+        $response = new Response(json_encode(array(
+            'available' => (int) $occupationDetail->getAvailable(),
+            'free' => (int) $occupationDetail->getFree(),
+            'total' => (int) $occupationDetail->getTotal(),
+        )));
+        
+        $response->headers->set('content-type', 'application/json');
+        
+        return $response;
+    }
+    
 }

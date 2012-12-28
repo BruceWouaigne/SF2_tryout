@@ -52,14 +52,14 @@ class OccupationDetail
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Demo\BiclooBundle\Entity\Station", cascade={"remove"}, inversedBy="occupationDetails")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      * @Assert\NotBlank()
      */
     private $station;
-    
+
     /**
      * Get id
      *
@@ -79,7 +79,7 @@ class OccupationDetail
     public function setAvailable($available)
     {
         $this->available = $available;
-    
+
         return $this;
     }
 
@@ -102,7 +102,7 @@ class OccupationDetail
     public function setFree($free)
     {
         $this->free = $free;
-    
+
         return $this;
     }
 
@@ -125,7 +125,7 @@ class OccupationDetail
     public function setTotal($total)
     {
         $this->total = $total;
-    
+
         return $this;
     }
 
@@ -138,7 +138,7 @@ class OccupationDetail
     {
         return $this->total;
     }
-    
+
     /**
      * Get Station
      * 
@@ -148,7 +148,7 @@ class OccupationDetail
     {
         return $this->station;
     }
-    
+
     /**
      * Set Station
      * 

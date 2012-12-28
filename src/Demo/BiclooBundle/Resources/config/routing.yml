@@ -1,6 +1,14 @@
-demo_bicloo_homepage:
+bicloo_homepage:
     pattern:  /
     defaults: { _controller: BiclooBundle:Default:index }
-demo_bicloo_reload_stations:
+    
+bicloo_reload_stations:
     pattern:  /reload_bicloo
     defaults: { _controller: BiclooBundle:Default:reloadStations }
+
+bicloo_station_info:
+    pattern: /info
+    defaults: { _controller: BiclooBundle:Default:loadStationInfo }
+    requirements:
+        _method: POST
+        stationNumber: \d+

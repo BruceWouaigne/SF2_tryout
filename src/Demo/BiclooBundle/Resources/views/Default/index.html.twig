@@ -2,22 +2,85 @@
 
 {% block body %}
 
-<h1>Stations list</h1>
-<table>
-    <tr>
-        <th>Number</th>
-        <th>Name</th>
-        <th>Distance from downtown (km)</th>
-        <th>Is far from downtown ({{ constant('Demo\\BiclooBundle\\Entity\\Station::REMOTE_RATE') }} km)</th>
-    </tr>
-    {% for station in stations %}
-    <tr>
-        <td>{{ station.number }}</td>
-        <td>{{ station.name }}</td>
-        <td>{{ station.distance }}</td>
-        <td>{{ (station.isFar ? 'yes' : 'no') }}</td>
-    </tr>
-    {% endfor %}
+<script>
+    $(document).ready(function() {
+            $("#datatable").dataTable({
+                    "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                    "sPaginationType": "bootstrap",
+                    "iDisplayLength": "100",
+                    "oLanguage": {
+                            "sLengthMenu": "_MENU_ records per page"
+                    }
+            });
+    });
+    
+    function loadInfo(stationNumber, stationName) {
+        $.ajax({
+            url: "{{ path('bicloo_station_info') }}",
+            type: "POST",
+            data: {"stationNumber": stationNumber}
+        }).done(function(datas) {
+            $("#modal-title").html("[" + stationName +"] - Informations");
+            $("#field-available").html(datas.available);
+            $("#field-free").html(datas.free);
+            $("#field-total").html(datas.total);
+            $('#info-modal').modal();
+        });
+    }
+    
+</script>
+
+<h2>Bicloo station list</h2>
+
+<table id="datatable" class="table table-striped table-bordered table-hover" style="width:100%;">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Number</th>
+            <th>Distance from downtown (km)</th>
+            <th>Is far from downtown (>{{ constant('Demo\\BiclooBundle\\Entity\\Station::REMOTE_RATE') }} km)</th>
+            <th>Payment Service</th>
+        </tr>        
+    </thead>
+    <tbody>     
+        {% for station in stations %}
+            <tr>
+                <td><a href='javascript:loadInfo({{ station.number }}, "{{ station.name|escape('html') }}")'>{{ station.name }}</a></td>
+                <td style="text-align:center;">{{ station.number }}</td>
+                <td style="text-align:center;">{{ station.distance }}</td>
+                <td style="text-align:center;">{{ (station.isFar ? 'yes' : 'no') }}</td>
+                <td style="text-align:center;">{{ (station.bonus ? 'yes' : 'no') }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
+
+<div id="info-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="Station information" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="modal-title"></h3>
+    </div>    
+    <div class="modal-body">
+        <table class="table table-striped table-bordered table-hover" style="width:100%;">
+            <thead>
+                <tr>
+                    <th style="text-align:center;">Available bike(s)</th>
+                    <th style="text-align:center;">Free slot(s)</th>
+                    <th style="text-align:center;">Total slots</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center;" id="field-available"></td>
+                    <td style="text-align:center;" id="field-free"></td>
+                    <td style="text-align:center;" id="field-total"></td>
+                </tr>
+            </tbody>
+        </table>        
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
 
 {% endblock %}

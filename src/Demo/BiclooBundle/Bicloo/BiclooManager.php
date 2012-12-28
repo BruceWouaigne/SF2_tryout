@@ -64,7 +64,7 @@ class BiclooManager
     
     public function cleanStationName($dirtyName)
     {
-        return substr($dirtyName, trim(strpos($dirtyName, '-') +1));
+        return trim(substr($dirtyName, strpos($dirtyName, '-') +1));
     }
     
     public function getOccupationFor($stationNumber)
