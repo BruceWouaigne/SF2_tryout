@@ -1,15 +1,23 @@
-<h1>Liste des stations</h1>
+{% extends '::layout.html.twig' %}
+
+{% block body %}
+
+<h1>Stations list</h1>
 <table>
     <tr>
-        <th>Numéro</th>
-        <th>Nom</th>
-        <th>Distance</th>
+        <th>Number</th>
+        <th>Name</th>
+        <th>Distance from downtown (km)</th>
+        <th>Is far from downtown ({{ constant('Demo\\BiclooBundle\\Entity\\Station::REMOTE_RATE') }} km)</th>
     </tr>
     {% for station in stations %}
     <tr>
         <td>{{ station.number }}</td>
         <td>{{ station.name }}</td>
-        <td>{{ station.isFar}}</td>
+        <td>{{ station.distance }}</td>
+        <td>{{ (station.isFar ? 'yes' : 'no') }}</td>
     </tr>
     {% endfor %}
 </table>
+
+{% endblock %}

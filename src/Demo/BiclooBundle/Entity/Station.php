@@ -3,15 +3,23 @@
 namespace Demo\BiclooBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Demo\BiclooBundle\Entity\Station
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Demo\BiclooBundle\Entity\StationRepository")
+ * @UniqueEntity(fields="name")
+ * @UniqueEntity(fields="number")
  */
 class Station
 {
+    
+    const DOWN_TOWN_LAT = 47.21806;
+    const DOWN_TOWN_LNG = -1.55278;
+    const REMOTE_RATE = 1;
+    
     /**
      * @var integer $id
      *
@@ -70,6 +78,10 @@ class Station
      */
     private $lng;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Demo\BiclooBundle\Entity\OccupationDetail", mappedBy="station")
+     */
+    private $occupationDetails;
 
     /**
      * Get id
@@ -242,19 +254,42 @@ class Station
         return $this->lng;
     }
     
+    /**
+     * Get OccupationDetails
+     * 
+     * @return OccupationDetail
+     */
+    public function getOccupationDetails()
+    {
+        return $this->occupationDetails;
+    }
+
+    /**
+     * Is the station far from downtown
+     * 
+     * @return boolean
+     */
     public function isFar()
     {
-        $townLat = 47.21806;
-        $townLng = -1.55278;
-        $deltaLng = $this->getLng() - $townLng ;
+        return ($this->getDistance() > self::REMOTE_RATE ? true : false);
+    }
+    
+    /**
+     *  Get distance
+     * 
+     * @return double
+     */
+    public function getDistance()
+    {
+        $deltaLng = $this->getLng() - self::DOWN_TOWN_LNG ;
         
-        $distance  = sin(deg2rad($townLat)) * sin(deg2rad($this->getLat())) + cos(deg2rad($townLat)) * cos(deg2rad($this->getLat())) * cos(deg2rad($deltaLng)) ;
+        $distance  = sin(deg2rad(self::DOWN_TOWN_LAT)) * sin(deg2rad($this->getLat())) + cos(deg2rad(self::DOWN_TOWN_LAT)) * cos(deg2rad($this->getLat())) * cos(deg2rad($deltaLng)) ;
         $distance  = acos($distance);
         $distance  = rad2deg($distance);
         $distance  = $distance * 60 * 1.1515;
         $distance  = round($distance, 4);
         
-        return $distance * 1.609344;
+        return round($distance * 1.609344, 2);
     }
     
 }

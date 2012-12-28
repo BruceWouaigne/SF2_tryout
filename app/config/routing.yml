@@ -1,5 +1,5 @@
 demo_bicloo:
-    resource: "@DemoBiclooBundle/Resources/config/routing.yml"
+    resource: "@BiclooBundle/Resources/config/routing.yml"
     prefix:   /
 
 demo_rest:

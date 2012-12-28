@@ -1,0 +1,3 @@
+parameters:
+    webservice.carto.url: http://www.bicloo.nantesmetropole.fr/service/carto/
+    webservice.station.url: http://www.bicloo.nantesmetropole.fr/service/stationdetails/nantes/

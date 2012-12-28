@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class StationRepository extends EntityRepository
 {
+    
+    public function getOrderedStations()
+    {
+        return $this->createQueryBuilder('s')
+                ->orderBy('s.number', 'ASC')
+                ->getQuery()
+                ->execute();
+    }
+    
 }
